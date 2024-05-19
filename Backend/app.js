@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-   origin:'http://dns-management.vercel.app',
+   origin:'https://dns-management.vercel.app',
    methods:["GET","POST","PUT","DELETE"],
    credentials:true
  }));
