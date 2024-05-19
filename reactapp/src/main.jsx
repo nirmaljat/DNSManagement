@@ -4,8 +4,7 @@ import App from "./App";
 import "./styles/app.scss";
 import { createContext } from "react";
 
-export const server = "http://43.205.115.57:3000
-";
+export const server = "http://43.205.115.57:3000";
 
 export const Context = createContext({ isAuthenticated: false });
 
