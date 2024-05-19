@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
-import HealthInfo from "./pages/HealthInfo";
+import Search from "./pages/search";
 import Register from "./pages/Register";
 import { Toaster } from "react-hot-toast";
 import { useContext, useEffect } from "react";
@@ -38,8 +38,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/info" element={<HealthInfo />} />
         <Route path="/Register" element={<Register />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
       <Toaster />
     </Router>

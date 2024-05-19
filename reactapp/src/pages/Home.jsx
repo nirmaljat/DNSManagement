@@ -2,30 +2,57 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Context, server } from "../main";
 import { toast } from "react-hot-toast";
-import TodoItem from "../components/TodoItem";
+import DNSItem from "../components/DNSItem";
 import { Navigate } from "react-router-dom";
 
 const Home = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [timeToCompleteDaily, settimeToCompleteDaily] = useState("");
+  const [name, setName] = useState("");
+  const [type, setType] = useState("");
+  const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [dnsRecords, setDnsRecords] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const { isAuthenticated } = useContext(Context);
 
 
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      toast.error("Please select a file.");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+  
+    try {
+      setLoading(true);
+      const { data } = await axios.post(`${server}/DNS/bulk`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      toast.success(data.message);
+      setLoading(false);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  };
 
-
-
-
-
-  const updateHandler = async (id) => {
+  const updateHandler = async (id, editedName, editedType, editedValue) => {
     try {
       const { data } = await axios.post(
-        `${server}/task/${id}`,
-        {},
+        `${server}/DNS/${id}`,
+        {
+          name: editedName,
+          type: editedType,
+          value: editedValue,
+        },
         {
           withCredentials: true,
         }
@@ -38,12 +65,9 @@ const Home = () => {
     }
   };
 
-
-
-
   const deleteHandler = async (id) => {
     try {
-      const { data } = await axios.delete(`${server}/task/${id}`, {
+      const { data } = await axios.delete(`${server}/DNS/${id}`, {
         withCredentials: true,
       });
 
@@ -54,19 +78,16 @@ const Home = () => {
     }
   };
 
-
-
-
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       const { data } = await axios.post(
-        `${server}/task/new`,
+        `${server}/DNS/new`,
         {
-          title,
-          description,
-          timeToCompleteDaily
+          name,
+          type,
+          value,
         },
         {
           withCredentials: true,
@@ -76,9 +97,9 @@ const Home = () => {
         }
       );
 
-      setTitle("");
-      setDescription("");
-      settimeToCompleteDaily("")
+      setName("");
+      setType("");
+      setValue("");
       toast.success(data.message);
       setLoading(false);
       setRefresh((prev) => !prev);
@@ -90,11 +111,11 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get(`${server}/task/my`, {
+      .get(`${server}/DNS/my`, {
         withCredentials: true,
       })
       .then((res) => {
-        setTasks(res.data.tasks);
+        setDnsRecords(res.data.dnss);
       })
       .catch((e) => {
         toast.error(e.response.data.message);
@@ -110,46 +131,55 @@ const Home = () => {
           <form onSubmit={submitHandler}>
             <input
               type="text"
-              placeholder="Title"
+              placeholder="Name"
               required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <input
               type="text"
-              placeholder="Description"
+              placeholder="Type"
               required
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={type}
+              onChange={(e) => setType(e.target.value)}
             />
             <input
               type="text"
-              placeholder="Time to Complete"
+              placeholder="Value"
               required
-              value={timeToCompleteDaily}
-              onChange={(e) => settimeToCompleteDaily(e.target.value)}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
             />
 
+
+          <input
+            type="file"
+            accept=".json"
+            onChange={(e) => setSelectedFile(e.target.files[0])}
+            style={{ marginTop: "10px" }}
+          />
+          <button disabled={loading} onClick={handleFileUpload}>
+            Upload File
+          </button>
             <button disabled={loading} type="submit">
-              Add Task
+              Add DNS Record
             </button>
+
+
           </form>
         </section>
       </div>
 
-
-
-      <section className="todosContainer">
-        {tasks.map((i) => (
-          <TodoItem
-            title={i.title}
-            description={i.description}
-            timeToCompleteDaily={i.timeToCompleteDaily}
-            isCompleted={i.isCompleted}
+      <section className="dnsContainer">
+        {dnsRecords.map((record) => (
+          <DNSItem
+            name={record.name}
+            type={record.type}
+            value={record.value}
             updateHandler={updateHandler}
             deleteHandler={deleteHandler}
-            id={i._id}
-            key={i._id}
+            id={record._id}
+            key={record._id}
           />
         ))}
       </section>

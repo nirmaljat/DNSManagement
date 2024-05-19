@@ -2,10 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import userRoute from "./routes/user.js"
-import taskRoute from "./routes/task.js"
-import infoRoute from "./routes/seeInfo.js"
-import updateTasksDaily from"./middleware/updateDaily.js";
-import cron from "node-cron";
+import DNSRoute from "./routes/DNS.js"
 import cors from "cors";
 
 
@@ -24,12 +21,9 @@ app.use(cors({
 
 
 app.use("/users", userRoute);
-app.use("/task", taskRoute);
-app.use("/info", infoRoute);
+app.use("/dns", DNSRoute);
 
-cron.schedule("0 0 * * *", () => {
-  updateTasksDaily();
-});
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -37,4 +31,6 @@ app.get('/', (req, res) => {
 
   
   
- 
+//  tHN9rxzEQSDhdpsj
+
+// mongodb://0.0.0.0:27017

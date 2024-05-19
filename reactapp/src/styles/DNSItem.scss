@@ -1,0 +1,60 @@
+$border-color: #ccc;
+$border-radius: 5px;
+$padding: 10px;
+$margin-bottom: 10px;
+$btn-padding: 5px 10px;
+$btn-border-radius: 3px;
+$btn-color: white;
+$edit-bg-color: #007bff;
+$save-bg-color: #4caf50;
+$delete-bg-color: #dc3545;
+
+.dns-item {
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: $padding;
+  margin-bottom: $margin-bottom;
+
+  .edit-mode {
+    input {
+      margin-bottom: 5px;
+      width: 100%;
+      padding: 5px;
+    }
+  }
+
+  .display-mode {
+    margin-bottom: 5px;
+
+    h4 {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .actions {
+    button {
+      margin-right: 5px;
+      color: $btn-color;
+      border: none;
+      border-radius: $btn-border-radius;
+      cursor: pointer;
+      padding: $btn-padding;
+
+      &.save-btn {
+        background-color: $save-bg-color;
+      }
+
+      &.edit-btn {
+        background-color: $edit-bg-color;
+      }
+
+      &.delete-btn {
+        background-color: $delete-bg-color;
+      }
+    }
+  }
+}

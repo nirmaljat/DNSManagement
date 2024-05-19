@@ -28,12 +28,12 @@ const Header = () => {
   return (
     <nav className="header">
       <div>
-        <h2>Nirmal Health Monitor App</h2>
+        <h2>DNS Management App</h2>
       </div>
       <article>
         <Link to={"/"}>Home</Link>
         <Link to={"/profile"}>Profile</Link>
-        <Link to={"/info"}>Info</Link>
+        <Link to={"/search"}>Search</Link>
         {isAuthenticated ? (
           <button disabled={loading} onClick={logoutHandler} className="btn">
             Logout
