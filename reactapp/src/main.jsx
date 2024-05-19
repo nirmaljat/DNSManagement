@@ -4,7 +4,7 @@ import App from "./App";
 import "./styles/app.scss";
 import { createContext } from "react";
 
-export const server = "http://43.205.115.57:3000";
+export const server = "https://dns-management-295r.vercel.app";
 
 export const Context = createContext({ isAuthenticated: false });
 
